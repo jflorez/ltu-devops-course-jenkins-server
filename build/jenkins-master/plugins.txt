@@ -1,3 +1,6 @@
+configuration-as-code
+ws-cleanup
+
 # Git and GitHub integration
 git:latest
 git-client:latest
@@ -49,7 +52,6 @@ mailer:latest
 
 # Security and Formatting
 antisamy-markup-formatter:latest
-ssh-slaves:latest
 metrics:latest
 
 # Required dependencies

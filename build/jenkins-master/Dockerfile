@@ -16,24 +16,12 @@ RUN apt-get update && \
     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
     $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
     apt-get update && \
-    apt-get install -y docker-ce-cli
+    apt-get install -y docker-ce-cli docker-compose-plugin
 
-# Install Python build dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libssl-dev \
-    zlib1g-dev \
-    libbz2-dev \
-    libreadline-dev \
-    libsqlite3-dev \
-    libncursesw5-dev \
-    xz-utils \
-    tk-dev \
-    libxml2-dev \
-    libxmlsec1-dev \
-    libffi-dev \
-    liblzma-dev \
-    wget
+# Install Node.js 22.x
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g npm@latest
 
 # Switch to jenkins user for plugin installation
 USER jenkins
@@ -49,3 +37,7 @@ RUN jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt
 
 # Set custom port
 ENV JENKINS_OPTS --httpPort=${JENKINS_PORT:-8088}
+
+# Copy JCasC configuration
+COPY --chown=jenkins:jenkins jenkins.yaml /var/jenkins_home/jenkins.yaml
+ENV CASC_JENKINS_CONFIG=/var/jenkins_home/jenkins.yaml
