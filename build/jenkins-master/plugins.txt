@@ -1,0 +1,59 @@
+# Git and GitHub integration
+git:latest
+git-client:latest
+github:latest
+github-branch-source:latest
+
+# Pipeline support
+workflow-aggregator:latest
+pipeline-model-definition:latest
+pipeline-stage-view:latest
+pipeline-github-lib:latest
+branch-api:latest
+workflow-multibranch:latest
+
+# Credentials and security
+credentials:latest
+credentials-binding:latest
+matrix-auth:latest
+pam-auth:latest
+ldap:latest
+
+# Docker support
+docker-workflow:latest
+docker-plugin:latest
+docker-commons:latest
+docker-java-api:latest
+
+# Test reporting
+junit:latest
+test-results-analyzer:latest
+
+# UI and Dashboard
+blueocean:latest
+dashboard-view:latest
+theme-manager:latest
+dark-theme:latest
+cloudbees-folder:latest
+
+# Build and Workspace
+ant:latest
+gradle:latest
+build-timeout:latest
+timestamper:latest
+resource-disposer:latest
+
+# Email and Notifications
+email-ext:latest
+mailer:latest
+
+# Security and Formatting
+antisamy-markup-formatter:latest
+ssh-slaves:latest
+metrics:latest
+
+# Required dependencies
+structs:latest
+scm-api:latest
+script-security:latest
+
