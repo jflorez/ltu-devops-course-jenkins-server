@@ -1,18 +1,18 @@
 services:
-  jenkins:
+  jenkins-server:
     build:
-      context: build/jenkins-master
-    restart: on-failure
+      context: ./build/jenkins-server
     ports:
       - "${JENKINS_PORT:-8088}:8088"
       - "50000:50000"
     volumes:
-      - jenkins-data:/var/jenkins_home
+      - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-    user: root
     privileged: true
     environment:
-      JENKINS_HOST: "${JENKINS_HOST:-localhost}"
-      JENKINS_PORT: "${JENKINS_PORT:-8088}"
+      - JENKINS_HOST=${JENKINS_HOST:-localhost}
+      - JENKINS_PORT=${JENKINS_PORT:-8088}
+      - TESTCONTAINERS_RYUK_DISABLED=true
+
 volumes:
-  jenkins-data:
+  jenkins_home:
