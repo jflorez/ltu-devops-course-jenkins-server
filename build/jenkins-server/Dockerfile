@@ -26,15 +26,14 @@ RUN apt-get update && \
 
 # Create docker group and add jenkins user to it
 RUN groupadd -f docker && usermod -aG docker jenkins && \
-    echo "jenkins ALL=(ALL) NOPASSWD: /usr/bin/chmod" >> /etc/sudoers
+    echo "jenkins ALL=(ALL) NOPASSWD: /usr/bin/chmod" >> /etc/sudoers && \
+    echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # Install Node.js 22.x
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get install -y nodejs && \
     npm install -g npm@latest && \
     corepack enable
-
-
 
 # Switch to jenkins user for plugin installation
 USER jenkins

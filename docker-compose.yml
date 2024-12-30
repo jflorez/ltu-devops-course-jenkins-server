@@ -13,6 +13,7 @@ services:
       - JENKINS_HOST=${JENKINS_HOST:-localhost}
       - JENKINS_PORT=${JENKINS_PORT:-8088}
       - TESTCONTAINERS_RYUK_DISABLED=true
+      - TZ=${TZ:-Australia/Melbourne}
 
 volumes:
   jenkins_home:
