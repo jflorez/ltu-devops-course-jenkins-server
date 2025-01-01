@@ -67,11 +67,5 @@ To update Jenkins plugins:
 3. Select plugins to update
 4. Click "Download now and install after restart"
 
-## Security Note
-
-This setup includes:
-- Matrix-based security
-- LDAP integration capabilities
-- PAM authentication support
 
 For learning environments, ensure proper network isolation and access controls. 
