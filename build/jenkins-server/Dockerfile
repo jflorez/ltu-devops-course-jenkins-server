@@ -48,7 +48,8 @@ COPY --chown=jenkins:jenkins plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt
 
 # Set custom port
-ENV JENKINS_OPTS --httpPort=${JENKINS_PORT:-8088}
+ARG JENKINS_PORT=8088
+ENV JENKINS_OPTS --httpPort=${JENKINS_PORT}
 
 # Copy JCasC configuration
 COPY --chown=jenkins:jenkins jenkins.yaml /var/jenkins_home/jenkins.yaml
