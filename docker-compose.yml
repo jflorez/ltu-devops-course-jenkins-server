@@ -22,9 +22,6 @@ services:
     build:
       context: ./build/jenkins-agent
     image: jenkins-agent-docker:latest
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    privileged: true
 
 volumes:
   jenkins_home:
