@@ -16,6 +16,15 @@ services:
       - JENKINS_PORT=${JENKINS_PORT:-8088}
       - TESTCONTAINERS_RYUK_DISABLED=true
       - TZ=${TZ:-Australia/Melbourne}
+      - JENKINS_AGENT_IMAGE=jenkins-agent-docker:latest
+
+  jenkins-agent:
+    build:
+      context: ./build/jenkins-agent
+    image: jenkins-agent-docker:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    privileged: true
 
 volumes:
   jenkins_home:

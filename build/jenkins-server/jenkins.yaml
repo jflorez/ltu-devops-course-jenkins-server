@@ -1,3 +1,23 @@
 security:
   gitHostKeyVerificationConfiguration:
     sshHostKeyVerificationStrategy: "noHostKeyVerificationStrategy"
+jenkins:
+  numExecutors: 0
+  clouds:
+    - docker:
+        name: "docker"
+        exposeDockerHost: true
+        dockerApi:
+          dockerHost:
+            uri: "unix:///var/run/docker.sock"
+        templates:
+          - labelString: "docker-agent"
+            dockerTemplateBase:
+              image: "${JENKINS_AGENT_IMAGE}"
+              privileged: true
+              mounts:
+                - "type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock"
+            remoteFs: "/home/jenkins/agent"
+            connector: "attach"
+            instanceCapStr: "10"
+            pullStrategy: PULL_NEVER
