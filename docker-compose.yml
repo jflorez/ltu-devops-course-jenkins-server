@@ -16,12 +16,12 @@ services:
       - JENKINS_PORT=${JENKINS_PORT:-8088}
       - TESTCONTAINERS_RYUK_DISABLED=true
       - TZ=${TZ:-Australia/Melbourne}
-      - JENKINS_AGENT_IMAGE=jenkins-agent-docker:latest
+      - JENKINS_AGENT_IMAGE=jenkins-agent-node22:latest
 
-  jenkins-agent:
+  jenkins-agent-node22:
     build:
-      context: ./build/jenkins-agent
-    image: jenkins-agent-docker:latest
+      context: ./build/jenkins-agent-node22
+    image: jenkins-agent-node22:latest
 
 volumes:
   jenkins_home:
