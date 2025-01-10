@@ -11,9 +11,9 @@ jenkins:
           dockerHost:
             uri: "unix:///var/run/docker.sock"
         templates:
-          - labelString: "docker-agent"
+          - labelString: "node"
             dockerTemplateBase:
-              image: "${JENKINS_AGENT_IMAGE}"
+              image: "${JENKINS_AGENT_NODE22}"
               privileged: true
               mounts:
                 - "type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock"

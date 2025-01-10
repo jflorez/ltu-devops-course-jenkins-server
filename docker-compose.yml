@@ -16,7 +16,7 @@ services:
       - JENKINS_PORT=${JENKINS_PORT:-8088}
       - TESTCONTAINERS_RYUK_DISABLED=true
       - TZ=${TZ:-Australia/Melbourne}
-      - JENKINS_AGENT_IMAGE=jenkins-agent-node22:latest
+      - JENKINS_AGENT_NODE22=jenkins-agent-node22:latest
 
   jenkins-agent-node22:
     build:
