@@ -1,71 +1,88 @@
 # Jenkins Server for DevOps Course
 
-This repository contains a Docker-based Jenkins server configuration designed for learning DevOps practices. The server comes pre-configured with essential plugins for continuous integration and deployment workflows.
-
-## Prerequisites
-
-- Docker
-- Docker Compose
-- Git
+This repository contains a containerized Jenkins setup designed for learning DevOps practices. It features a Jenkins server and a custom Node.js agent configured using Infrastructure as Code principles.
 
 ## Features
 
-- Jenkins 2.491 with JDK 21
-- Docker-in-Docker support for container builds
-- Pre-installed plugins for:
-  - Git/GitHub integration
-  - Pipeline and multibranch pipeline support
-  - Docker build and deployment
-  - Test result analysis
-  - Build tools (Ant, Gradle)
-  - Authentication (LDAP, PAM)
-  - Email notifications
+### Jenkins Configuration as Code (JCasC)
+- Automated server configuration using `jenkins.yaml`
+- Zero-executor security policy on master node
+- Docker-based agent configuration
+- Git integration settings
 
-## Quick Start
+### Docker Integration
+- Docker-in-Docker capability for building and running containers in pipelines
+- Custom Node.js 22 agent image
+- Dynamic agent provisioning using Docker
+- Secure Docker socket mounting
 
-1. Clone this repository:
-   ```bash
-   git clone <repository-url>
-   cd jenkins-server
-   ```
+### Agent Configuration
+- Automated agent provisioning using Docker
+- Node.js 22 environment for running Node.js applications
+- Docker capabilities enabled
+- Maximum of 10 concurrent instances
+- Privileged mode for full Docker functionality
 
-2. Start Jenkins:
-   ```bash
-   docker-compose up -d
-   ```
+## Prerequisites
+- Docker
+- Docker Compose
 
-3. Access Jenkins:
-   - URL: http://localhost:8088
-   - Follow the initial setup wizard to create your admin account
+## Setup Instructions
 
-## Configuration
+1. Start Jenkins (this will build the agent image and start the server):
+```bash
+docker compose up -d
+```
 
-### Environment Variables
+2. Access Jenkins at: http://localhost:8088
 
-- `JENKINS_PORT`: Port for Jenkins web interface (default: 8088)
-- `JENKINS_HOST`: Hostname for Jenkins (default: localhost)
+## Environment Variables
+- `JENKINS_PORT`: Server port (default: 8088)
+- `JENKINS_HOST`: Server hostname (default: localhost)
+- `TZ`: Timezone (default: Australia/Melbourne)
 
-### Volumes
+## Understanding the Components
 
-- `jenkins-data`: Persistent storage for Jenkins configuration and data
-- `/var/run/docker.sock`: Docker socket for Docker-in-Docker support
+### Jenkins Server (`build/jenkins-server/`)
+- `Dockerfile`: Base Jenkins server with Docker support
+- `jenkins.yaml`: JCasC configuration file
+- `plugins.txt`: Pre-installed Jenkins plugins
 
-## Usage in Course
+### Node.js Agent (`build/jenkins-agent-node22/`)
+- `Dockerfile`: Custom agent with Node.js 22
+- Designed specifically for building and testing Node.js applications
 
-This Jenkins server is configured to demonstrate:
-1. Pipeline creation and management
-2. Source code integration with Git
-3. Automated testing and reporting
-4. Docker container builds
-5. Basic security and authentication setup
+## Usage in Pipelines
 
-## Maintenance
+Example pipeline using the Node.js agent:
+```groovy
+pipeline {
+    agent {
+        label 'node'
+    }
+    stages {
+        stage('Test Environment') {
+            steps {
+                sh 'node --version'
+                sh 'npm --version'
+                sh 'docker --version'
+            }
+        }
+    }
+}
+```
 
-To update Jenkins plugins:
-1. Access Jenkins web interface
-2. Navigate to Manage Jenkins > Plugins
-3. Select plugins to update
-4. Click "Download now and install after restart"
+## Security Notes
+- Master node runs with zero executors for security
+- Docker socket is mounted for Docker-in-Docker operations
+- Agent runs in privileged mode for full Docker functionality
+- Git host key verification is disabled for learning purposes (not recommended for production)
 
-
-For learning environments, ensure proper network isolation and access controls. 
+## Learning Objectives
+This setup demonstrates several key DevOps concepts:
+1. Infrastructure as Code (IaC)
+2. Container orchestration
+3. CI/CD pipeline configuration
+4. Agent/executor management
+5. Security practices in CI/CD
+6. Environment configuration and management 

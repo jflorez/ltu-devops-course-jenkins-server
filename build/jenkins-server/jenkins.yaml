@@ -1,23 +1,62 @@
+# This is a Jenkins Configuration as Code (JCasC) file
+# It automatically configures Jenkins settings when the server starts up
+
+# Security settings
 security:
   gitHostKeyVerificationConfiguration:
+    # Disable SSH host key verification for git operations
+    # Note: In production, you should verify host keys for security
     sshHostKeyVerificationStrategy: "noHostKeyVerificationStrategy"
+
 jenkins:
+  # Set the number of executors on the Jenkins master node to 0
+  # This is a security best practice - we want all jobs to run on agents, not the master
   numExecutors: 0
+
+  # Configure the Docker cloud for dynamic agent provisioning
   clouds:
     - docker:
+        # Name of this cloud configuration
         name: "docker"
+        # Allow agents to access the Docker daemon on the host
+        # This is needed for Docker-in-Docker operations
         exposeDockerHost: true
+
+        # Configure how Jenkins connects to Docker
         dockerApi:
           dockerHost:
+            # Use the Docker socket from the host machine
+            # This allows Jenkins to create and manage containers
             uri: "unix:///var/run/docker.sock"
+
+        # Define the template for creating agent containers
         templates:
-          - labelString: "node"
+          - # The label to identify this type of agent in Jenkins
+            # Jobs can request this agent by specifying: agent { label 'node' }
+            labelString: "node"
+
+            # Base configuration for the Docker container
             dockerTemplateBase:
+              # The Docker image to use for the agent
+              # This value comes from an environment variable set in docker-compose.yml
               image: "${JENKINS_AGENT_NODE22}"
+              # Run container in privileged mode (needed for Docker-in-Docker)
               privileged: true
+              # Mount the Docker socket from host to container
+              # This allows the agent to use Docker commands
               mounts:
                 - "type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock"
+
+            # The directory in the container where Jenkins will put build files
             remoteFs: "/home/jenkins/agent"
+
+            # Use Docker's attach mechanism to connect to the container
+            # This is more reliable than JNLP for Docker-based agents
             connector: "attach"
+
+            # Maximum number of concurrent instances of this agent
             instanceCapStr: "10"
+
+            # Never try to pull the image from a registry
+            # We build it locally, so we want to use our local image
             pullStrategy: PULL_NEVER
