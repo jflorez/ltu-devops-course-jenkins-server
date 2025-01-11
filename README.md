@@ -52,6 +52,20 @@ docker compose up -d
 - `Dockerfile`: Custom agent with Node.js 22
 - Designed specifically for building and testing Node.js applications
 
+## Security Notes
+- Master node runs with zero executors for security
+- Docker socket is mounted for Docker-in-Docker operations
+- Agent runs in privileged mode for full Docker functionality
+- Git host key verification is disabled for learning purposes (not recommended for production)
+
+## Learning Objectives
+This setup demonstrates several key DevOps concepts that can be applied across various CI/CD tools:
+1. Infrastructure as Code (IaC) for automated configuration management
+2. Container orchestration and management
+3. Effective use of build agents and executors
+4. Security best practices in continuous integration and delivery
+5. Environment configuration and management for consistency and reliability 
+
 ## Usage in Pipelines
 
 Example pipeline using the Node.js agent:
@@ -69,20 +83,4 @@ pipeline {
             }
         }
     }
-}
-```
-
-## Security Notes
-- Master node runs with zero executors for security
-- Docker socket is mounted for Docker-in-Docker operations
-- Agent runs in privileged mode for full Docker functionality
-- Git host key verification is disabled for learning purposes (not recommended for production)
-
-## Learning Objectives
-This setup demonstrates several key DevOps concepts:
-1. Infrastructure as Code (IaC)
-2. Container orchestration
-3. CI/CD pipeline configuration
-4. Agent/executor management
-5. Security practices in CI/CD
-6. Environment configuration and management 
+} 
